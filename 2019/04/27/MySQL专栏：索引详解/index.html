@@ -6,15 +6,22 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <link rel="dns-prefetch" href="http://yoursite.com">
-  <title>Archives | Hexo</title>
+  <title>MySQL专栏：索引详解 | Hexo</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta property="og:type" content="website">
-<meta property="og:title" content="Hexo">
-<meta property="og:url" content="http://yoursite.com/archives/index.html">
+  <meta name="description" content="什么是索引 索引是数据中为了提高检索速度而设计的一种数据结构，类似于字典中的目录，在查找字典内容的时候，通过目录查找数据的位置，然后直接从该位置获取数据信息。索引的优点是可以提高数据检索速度，缺点是创建和维护索引需要耗费时间和存储空间，索引能提高查询速度，但会减慢写入速度。  mysql索引分类 mysql索引可以分为两大类，聚簇索引和非聚簇索引，聚簇索引的叶子节点就是数据节点，非聚簇索引的叶子节">
+<meta property="og:type" content="article">
+<meta property="og:title" content="MySQL专栏：索引详解">
+<meta property="og:url" content="http://yoursite.com/2019/04/27/MySQL专栏：索引详解/index.html">
 <meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="什么是索引 索引是数据中为了提高检索速度而设计的一种数据结构，类似于字典中的目录，在查找字典内容的时候，通过目录查找数据的位置，然后直接从该位置获取数据信息。索引的优点是可以提高数据检索速度，缺点是创建和维护索引需要耗费时间和存储空间，索引能提高查询速度，但会减慢写入速度。  mysql索引分类 mysql索引可以分为两大类，聚簇索引和非聚簇索引，聚簇索引的叶子节点就是数据节点，非聚簇索引的叶子节">
 <meta property="og:locale" content="default">
+<meta property="og:image" content="http://yoursite.com/assets/blogImg/primarykeyindex.png">
+<meta property="og:image" content="http://yoursite.com/assets/blogImg/secondindex.png">
+<meta property="og:updated_time" content="2019-04-27T04:53:58.932Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Hexo">
+<meta name="twitter:title" content="MySQL专栏：索引详解">
+<meta name="twitter:description" content="什么是索引 索引是数据中为了提高检索速度而设计的一种数据结构，类似于字典中的目录，在查找字典内容的时候，通过目录查找数据的位置，然后直接从该位置获取数据信息。索引的优点是可以提高数据检索速度，缺点是创建和维护索引需要耗费时间和存储空间，索引能提高查询速度，但会减慢写入速度。  mysql索引分类 mysql索引可以分为两大类，聚簇索引和非聚簇索引，聚簇索引的叶子节点就是数据节点，非聚簇索引的叶子节">
+<meta name="twitter:image" content="http://yoursite.com/assets/blogImg/primarykeyindex.png">
   
     <link rel="alternative" href="/atom.xml" title="Hexo" type="application/atom+xml">
   
@@ -142,103 +149,204 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            
+            <article id="post-MySQL专栏：索引详解" class="article article-type-post " itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
   
+    <h1 class="article-title" itemprop="name">
+      MySQL专栏：索引详解
+    </h1>
   
-    
-    
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2019" class="archive-year">2019</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2019/04/27/MySQL专栏：索引详解/" class="archive-article-date">
+
+        
+        <a href="/2019/04/27/MySQL专栏：索引详解/" class="archive-article-date">
   	<time datetime="2019-04-27T01:45:14.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-04-27</time>
 </a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2019/04/27/MySQL专栏：索引详解/">MySQL专栏：索引详解</a>
-    </h1>
-  
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="什么是索引"><a href="#什么是索引" class="headerlink" title="什么是索引"></a>什么是索引</h3><blockquote>
+<p>索引是数据中为了提高检索速度而设计的一种数据结构，类似于字典中的目录，在查找字典内容的时候，通过目录查找数据的位置，然后直接从该位置获取数据信息。索引的优点是可以提高数据检索速度，缺点是创建和维护索引需要耗费时间和存储空间，索引能提高查询速度，但会减慢写入速度。</p>
+</blockquote>
+<h3 id="mysql索引分类"><a href="#mysql索引分类" class="headerlink" title="mysql索引分类"></a>mysql索引分类</h3><blockquote>
+<p>mysql索引可以分为两大类，聚簇索引和非聚簇索引，聚簇索引的叶子节点就是数据节点，非聚簇索引的叶子节点仍然是索引节点，只不过有指向对应数据块的指针。他们分别是两种不同的存储引擎所采用的索引结构，Innodb中的索引结构为聚簇索引形式，而MyISAM中的索引结构为非聚簇索引形式。一般情况下主键会默认创建聚簇索引，一个表中只能有一个聚簇索引。</p>
+</blockquote>
+<ul>
+<li>普通索引：仅加快查询速度</li>
+<li>唯一索引：加速查询+列值唯一（数据中可以包含null)</li>
+<li>主键索引：加速查询+列值唯一+一个表中只有一个主键索引（数据中不能包含null)</li>
+<li>组合索引：多列值组成的索引，专门用户组合搜素，效率大于索引合并。</li>
+<li>索引合并：使用单个多列索引组合搜索</li>
+<li>全文索引：对文本内容进行分词，然后进行检索</li>
+</ul>
+<h3 id="mysql两种存储引擎的区别"><a href="#mysql两种存储引擎的区别" class="headerlink" title="mysql两种存储引擎的区别"></a>mysql两种存储引擎的区别</h3><ul>
+<li>MyISAM</li>
+</ul>
+<blockquote>
+<p>MyISAM的索引是非聚簇索引，索引和数据是分开的的，并且索引是有压缩的，这样内存使用率就会提高很多；</p>
+</blockquote>
+<blockquote>
+<p>Innodb支持事务和行锁，Innodb索引和数据捆绑在一起且没有压缩，因此索引文件会很大</p>
+</blockquote>
+<h3 id="mysql-索引的数据结构"><a href="#mysql-索引的数据结构" class="headerlink" title="mysql 索引的数据结构"></a>mysql 索引的数据结构</h3><h4 id="B-Tree"><a href="#B-Tree" class="headerlink" title="B-Tree"></a>B-Tree</h4><ul>
+<li>一颗m阶B-Tree 节点的孩子最多为mge</li>
+<li>根节点的孩子的个数&gt;=2(前提是树的高度大于1)</li>
+<li>除了根节点和叶子节点外，其他节点的孩子数为 [ceil(m/2),m]个，ceil表示向上取整,</li>
+<li>所有的叶子节点都出现在同一层，叶子节点不存储数据</li>
+</ul>
+<ul>
+<li>各个节点包含n个关键字信息：（P0,K1,P1,K2,P2,K3…Kn,Pn)<ul>
+<li>Ki（i=1,2,3..n) Ki表示关键字，且（K<sub>i-1</sub>&lt;Ki)，即关键字从小到大排序。</li>
+<li>关键字的个数n必须满足:[ceil(m/2)-1,m-1]</li>
+<li>Pi指向子树，且P<sub>i-1指向的子树的所有节点的关键字都是小于Ki,即父节点中的关键字，它的左孩子都小于它，右孩子都大于它。</sub></li>
+</ul>
+</li>
+</ul>
+<h4 id="B-Tree-1"><a href="#B-Tree-1" class="headerlink" title="B+Tree"></a>B+Tree</h4><blockquote>
+<p>B+Tree树是B-Tree树的变形，他们的差异在于:</p>
+<ul>
+<li>非叶子节点的指针个数等于关键字的个数</li>
+<li>父节点中的关键字，是子树关键字中最小的，</li>
+<li>所有叶子节点通过指针相连</li>
+<li>所有关键字都在叶子节点出现</li>
+</ul>
+</blockquote>
+<p>MyISAM B+树索引结构</p>
+<p><img src="/assets/blogImg/primarykeyindex.png" alt></p>
+<p><img src="/assets/blogImg/secondindex.png" alt></p>
 
-        <div class="article-info info-on-right">
-          
-          
+      
 
+      
+        <div class="page-reward">
+          <a href="javascript:;" class="page-reward-btn tooltip-top">
+            <div class="tooltip tooltip-east">
+            <span class="tooltip-item">
+              赏
+            </span>
+            <span class="tooltip-content">
+              <span class="tooltip-text">
+                <span class="tooltip-inner">
+                  <p class="reward-p"><i class="icon icon-quo-left"></i>谢谢你请我吃糖果<i class="icon icon-quo-right"></i></p>
+                  <div class="reward-box">
+                    
+                    
+                  </div>
+                </span>
+              </span>
+            </span>
+          </div>
+          </a>
         </div>
-        <div class="clearfix"></div>
-    </header>
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+      
+
+      
+
+      
+        
+<div class="share-btn share-icons tooltip-left">
+  <div class="tooltip tooltip-east">
+    <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+    <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
+        </div>
+      </div>
+    </span>
+  </div>
+</div>
+
+<div class="page-modal wx-share js-wx-box">
+    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//pan.baidu.com/share/qrcode?url=http://yoursite.com/2019/04/27/MySQL专栏：索引详解/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div class="mask js-mask"></div>
+      
+      <div class="clearfix"></div>
+    </div>
   </div>
 </article>
+
   
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2019/04/27/http和tcp/" class="archive-article-date">
-  	<time datetime="2019-04-26T16:06:06.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-04-27</time>
-</a>
+<nav id="article-nav">
+  
+  
+    <a href="/2019/04/27/http和tcp/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">http和tcp</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
         </div>
-    	 
+        
+        
+    </div>
+</aside>
+
+
+
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2019/04/27/http和tcp/">http和tcp</a>
-    </h1>
+  
   
 
-        <div class="article-info info-on-right">
-          
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2019/04/26/hello-world/" class="archive-article-date">
-  	<time datetime="2019-04-26T04:49:58.799Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-04-26</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2019/04/26/hello-world/">Hello World</a>
-    </h1>
   
 
-        <div class="article-info info-on-right">
-          
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-  
-    </div></section>
   
 
-    
+  
 
 
           </div>
@@ -261,8 +369,8 @@
 	var yiliaConfig = {
 		mathjax: false,
 		isHome: false,
-		isPost: false,
-		isArchive: true,
+		isPost: true,
+		isArchive: false,
 		isTag: false,
 		isCategory: false,
 		open_in_new: false,
