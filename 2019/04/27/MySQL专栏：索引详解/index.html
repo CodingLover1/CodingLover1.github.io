@@ -17,7 +17,9 @@
 <meta property="og:locale" content="default">
 <meta property="og:image" content="http://yoursite.com/assets/blogImg/primarykeyindex.png">
 <meta property="og:image" content="http://yoursite.com/assets/blogImg/secondindex.png">
-<meta property="og:updated_time" content="2019-04-27T04:53:58.932Z">
+<meta property="og:image" content="http://yoursite.com/assets/blogImg/innodbprimaryindexkey.png">
+<meta property="og:image" content="http://yoursite.com/assets/blogImg/innodbsecondindexkey.png">
+<meta property="og:updated_time" content="2019-04-30T12:49:17.560Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="MySQL专栏：索引详解">
 <meta name="twitter:description" content="什么是索引 索引是数据中为了提高检索速度而设计的一种数据结构，类似于字典中的目录，在查找字典内容的时候，通过目录查找数据的位置，然后直接从该位置获取数据信息。索引的优点是可以提高数据检索速度，缺点是创建和维护索引需要耗费时间和存储空间，索引能提高查询速度，但会减慢写入速度。  mysql索引分类 mysql索引可以分为两大类，聚簇索引和非聚簇索引，聚簇索引的叶子节点就是数据节点，非聚簇索引的叶子节">
@@ -215,9 +217,15 @@
 <li>所有关键字都在叶子节点出现</li>
 </ul>
 </blockquote>
-<p>MyISAM B+树索引结构</p>
+<p>MyISAM B+Tree索引结构</p>
 <p><img src="/assets/blogImg/primarykeyindex.png" alt></p>
 <p><img src="/assets/blogImg/secondindex.png" alt></p>
+<p>Innodb B+Tree索引结构</p>
+<p><img src="/assets/blogImg/innodbprimaryindexkey.png" alt><br><img src="/assets/blogImg/innodbsecondindexkey.png" alt></p>
+<h4 id="两中存储引擎的优缺点和适合场景"><a href="#两中存储引擎的优缺点和适合场景" class="headerlink" title="两中存储引擎的优缺点和适合场景"></a>两中存储引擎的优缺点和适合场景</h4><ul>
+<li>Innodb 支持行级锁，支持事务，暂难恢复性好，支持热备份;Innodb不保存表的行数，select count(*)的时候需要扫描整个表，Innodb适合频繁修改和安全性较高的应用。</li>
+<li>MyISAM 不支持事务，使用表锁，并发性差，索引占用空间小，具有更快的全表扫描性能。MyISAM 会保存表的数据条数。MyISAM适合查询和插入为主的应用。</li>
+</ul>
 
       
 
@@ -310,6 +318,15 @@
 
   
 <nav id="article-nav">
+  
+    <a href="/2019/05/03/MySQL专栏：sql优化/" id="article-nav-newer" class="article-nav-link-wrap">
+      <i class="icon-circle-left"></i>
+      <div class="article-nav-title">
+        
+          MySQL专栏:索引优化
+        
+      </div>
+    </a>
   
   
     <a href="/2019/04/27/http和tcp/" id="article-nav-older" class="article-nav-link-wrap">

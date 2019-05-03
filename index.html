@@ -144,6 +144,91 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-MySQL专栏：sql优化" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/05/03/MySQL专栏：sql优化/">MySQL专栏:索引优化</a>
+    </h1>
+  
+
+        
+        <a href="/2019/05/03/MySQL专栏：sql优化/" class="archive-article-date">
+  	<time datetime="2019-05-03T01:52:14.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-05-03</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h4 id="explain查看sql执行计划"><a href="#explain查看sql执行计划" class="headerlink" title="explain查看sql执行计划"></a>explain查看sql执行计划</h4><p><img src="/assets/blogImg/explain.png" alt></p>
+<ol>
+<li>select_type ：simple简单的select ,没有union和子查询，dependent union：union依赖外层的查询，dependent subquery:subquery依赖外层的查询</li>
+<li>type: all 对于每个来自于先前的表的行组合，进行完整的表扫描，index 使用来索引</li>
+<li>key:执行计划使用的索引</li>
+<li>rows:执行查询的行数</li>
+<li>extra:Using where:数据库服务层从存储引擎提取来数据又进行来一次条件过滤，Using index：列数据仅仅使用了索引中的数据并没有读取实际表</li>
+</ol>
+<h4 id="mysql-索引失效的一些情况"><a href="#mysql-索引失效的一些情况" class="headerlink" title="mysql 索引失效的一些情况"></a>mysql 索引失效的一些情况</h4><ol>
+<li>在where 子句中避免对字段进行null值判断</li>
+<li>避免在where子句中使用!=或&lt;&gt;操作符</li>
+<li>避免使用or来连接条件，可以改成使用union</li>
+<li>like语句以%开头</li>
+<li>避免在where子句中对字段进行表达式操作，例如：select id from t where num/2=100 可以改为：</li>
+<li>select id from t where num=100*2;</li>
+<li>避免在where子句中对字段进行函数操作，例如： select id from t where substring(name,1,3)=’abc,可以改为：select id from t where name=’abc%’;</li>
+<li>当where子句中的字段是复合索引的一列时，只有他是最左索引字段时索引才生效</li>
+<li></li>
+</ol>
+<h4 id="sql优化的一些技巧"><a href="#sql优化的一些技巧" class="headerlink" title="sql优化的一些技巧"></a>sql优化的一些技巧</h4><ol>
+<li>对查询进行优化，尽量避免全表扫描，首先应考虑在where及order by 涉及到的列添加索引</li>
+<li>用exists代替in,in操作相当于or操作</li>
+</ol>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2019/05/03/MySQL专栏：sql优化/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-MySQL专栏：索引详解" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -210,9 +295,15 @@
 <li>所有关键字都在叶子节点出现</li>
 </ul>
 </blockquote>
-<p>MyISAM B+树索引结构</p>
+<p>MyISAM B+Tree索引结构</p>
 <p><img src="/assets/blogImg/primarykeyindex.png" alt></p>
 <p><img src="/assets/blogImg/secondindex.png" alt></p>
+<p>Innodb B+Tree索引结构</p>
+<p><img src="/assets/blogImg/innodbprimaryindexkey.png" alt><br><img src="/assets/blogImg/innodbsecondindexkey.png" alt></p>
+<h4 id="两中存储引擎的优缺点和适合场景"><a href="#两中存储引擎的优缺点和适合场景" class="headerlink" title="两中存储引擎的优缺点和适合场景"></a>两中存储引擎的优缺点和适合场景</h4><ul>
+<li>Innodb 支持行级锁，支持事务，暂难恢复性好，支持热备份;Innodb不保存表的行数，select count(*)的时候需要扫描整个表，Innodb适合频繁修改和安全性较高的应用。</li>
+<li>MyISAM 不支持事务，使用表锁，并发性差，索引占用空间小，具有更快的全表扫描性能。MyISAM 会保存表的数据条数。MyISAM适合查询和插入为主的应用。</li>
+</ul>
 
       
 

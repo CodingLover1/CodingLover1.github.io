@@ -6,15 +6,21 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <link rel="dns-prefetch" href="http://yoursite.com">
-  <title>Archives: 2019 | Hexo</title>
+  <title>MySQL专栏:索引优化 | Hexo</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta property="og:type" content="website">
-<meta property="og:title" content="Hexo">
-<meta property="og:url" content="http://yoursite.com/archives/2019/index.html">
+  <meta name="description" content="explain查看sql执行计划  select_type ：simple简单的select ,没有union和子查询，dependent union：union依赖外层的查询，dependent subquery:subquery依赖外层的查询 type: all 对于每个来自于先前的表的行组合，进行完整的表扫描，index 使用来索引 key:执行计划使用的索引 rows:执行查询的行数 ex">
+<meta property="og:type" content="article">
+<meta property="og:title" content="MySQL专栏:索引优化">
+<meta property="og:url" content="http://yoursite.com/2019/05/03/MySQL专栏：sql优化/index.html">
 <meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="explain查看sql执行计划  select_type ：simple简单的select ,没有union和子查询，dependent union：union依赖外层的查询，dependent subquery:subquery依赖外层的查询 type: all 对于每个来自于先前的表的行组合，进行完整的表扫描，index 使用来索引 key:执行计划使用的索引 rows:执行查询的行数 ex">
 <meta property="og:locale" content="default">
+<meta property="og:image" content="http://yoursite.com/assets/blogImg/explain.png">
+<meta property="og:updated_time" content="2019-05-03T03:24:30.748Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Hexo">
+<meta name="twitter:title" content="MySQL专栏:索引优化">
+<meta name="twitter:description" content="explain查看sql执行计划  select_type ：simple简单的select ,没有union和子查询，dependent union：union依赖外层的查询，dependent subquery:subquery依赖外层的查询 type: all 对于每个来自于先前的表的行组合，进行完整的表扫描，index 使用来索引 key:执行计划使用的索引 rows:执行查询的行数 ex">
+<meta name="twitter:image" content="http://yoursite.com/assets/blogImg/explain.png">
   
     <link rel="alternative" href="/atom.xml" title="Hexo" type="application/atom+xml">
   
@@ -142,130 +148,178 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            
+            <article id="post-MySQL专栏：sql优化" class="article article-type-post " itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
   
+    <h1 class="article-title" itemprop="name">
+      MySQL专栏:索引优化
+    </h1>
   
-    
-    
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2019" class="archive-year">2019</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2019/05/03/MySQL专栏：sql优化/" class="archive-article-date">
+
+        
+        <a href="/2019/05/03/MySQL专栏：sql优化/" class="archive-article-date">
   	<time datetime="2019-05-03T01:52:14.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-05-03</time>
 </a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2019/05/03/MySQL专栏：sql优化/">MySQL专栏:索引优化</a>
-    </h1>
-  
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h4 id="explain查看sql执行计划"><a href="#explain查看sql执行计划" class="headerlink" title="explain查看sql执行计划"></a>explain查看sql执行计划</h4><p><img src="/assets/blogImg/explain.png" alt></p>
+<ol>
+<li>select_type ：simple简单的select ,没有union和子查询，dependent union：union依赖外层的查询，dependent subquery:subquery依赖外层的查询</li>
+<li>type: all 对于每个来自于先前的表的行组合，进行完整的表扫描，index 使用来索引</li>
+<li>key:执行计划使用的索引</li>
+<li>rows:执行查询的行数</li>
+<li>extra:Using where:数据库服务层从存储引擎提取来数据又进行来一次条件过滤，Using index：列数据仅仅使用了索引中的数据并没有读取实际表</li>
+</ol>
+<h4 id="mysql-索引失效的一些情况"><a href="#mysql-索引失效的一些情况" class="headerlink" title="mysql 索引失效的一些情况"></a>mysql 索引失效的一些情况</h4><ol>
+<li>在where 子句中避免对字段进行null值判断</li>
+<li>避免在where子句中使用!=或&lt;&gt;操作符</li>
+<li>避免使用or来连接条件，可以改成使用union</li>
+<li>like语句以%开头</li>
+<li>避免在where子句中对字段进行表达式操作，例如：select id from t where num/2=100 可以改为：</li>
+<li>select id from t where num=100*2;</li>
+<li>避免在where子句中对字段进行函数操作，例如： select id from t where substring(name,1,3)=’abc,可以改为：select id from t where name=’abc%’;</li>
+<li>当where子句中的字段是复合索引的一列时，只有他是最左索引字段时索引才生效</li>
+<li></li>
+</ol>
+<h4 id="sql优化的一些技巧"><a href="#sql优化的一些技巧" class="headerlink" title="sql优化的一些技巧"></a>sql优化的一些技巧</h4><ol>
+<li>对查询进行优化，尽量避免全表扫描，首先应考虑在where及order by 涉及到的列添加索引</li>
+<li>用exists代替in,in操作相当于or操作</li>
+</ol>
 
-        <div class="article-info info-on-right">
-          
-          
+      
 
+      
+        <div class="page-reward">
+          <a href="javascript:;" class="page-reward-btn tooltip-top">
+            <div class="tooltip tooltip-east">
+            <span class="tooltip-item">
+              赏
+            </span>
+            <span class="tooltip-content">
+              <span class="tooltip-text">
+                <span class="tooltip-inner">
+                  <p class="reward-p"><i class="icon icon-quo-left"></i>谢谢你请我吃糖果<i class="icon icon-quo-right"></i></p>
+                  <div class="reward-box">
+                    
+                    
+                  </div>
+                </span>
+              </span>
+            </span>
+          </div>
+          </a>
         </div>
-        <div class="clearfix"></div>
-    </header>
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+      
+
+      
+
+      
+        
+<div class="share-btn share-icons tooltip-left">
+  <div class="tooltip tooltip-east">
+    <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+    <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
+        </div>
+      </div>
+    </span>
+  </div>
+</div>
+
+<div class="page-modal wx-share js-wx-box">
+    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//pan.baidu.com/share/qrcode?url=http://yoursite.com/2019/05/03/MySQL专栏：sql优化/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div class="mask js-mask"></div>
+      
+      <div class="clearfix"></div>
+    </div>
   </div>
 </article>
+
   
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2019/04/27/MySQL专栏：索引详解/" class="archive-article-date">
-  	<time datetime="2019-04-27T01:45:14.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-04-27</time>
-</a>
+<nav id="article-nav">
+  
+  
+    <a href="/2019/04/27/MySQL专栏：索引详解/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">MySQL专栏：索引详解</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
         </div>
-    	 
+        
+        
+    </div>
+</aside>
+
+
+
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2019/04/27/MySQL专栏：索引详解/">MySQL专栏：索引详解</a>
-    </h1>
+  
   
 
-        <div class="article-info info-on-right">
-          
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2019/04/27/http和tcp/" class="archive-article-date">
-  	<time datetime="2019-04-26T16:06:06.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-04-27</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2019/04/27/http和tcp/">http和tcp</a>
-    </h1>
   
 
-        <div class="article-info info-on-right">
-          
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2019/04/26/hello-world/" class="archive-article-date">
-  	<time datetime="2019-04-26T04:49:58.799Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-04-26</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2019/04/26/hello-world/">Hello World</a>
-    </h1>
   
 
-        <div class="article-info info-on-right">
-          
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
   
-  
-    </div></section>
-  
-
-    
 
 
           </div>
@@ -288,8 +342,8 @@
 	var yiliaConfig = {
 		mathjax: false,
 		isHome: false,
-		isPost: false,
-		isArchive: true,
+		isPost: true,
+		isArchive: false,
 		isTag: false,
 		isCategory: false,
 		open_in_new: false,
