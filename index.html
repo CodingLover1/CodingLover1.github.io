@@ -144,6 +144,80 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-virtualbox中centos7使用桥接模式及配置固定ip" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/05/10/virtualbox中centos7使用桥接模式及配置固定ip/">virtualbox中centos7使用桥接模式及配置固定ip</a>
+    </h1>
+  
+
+        
+        <a href="/2019/05/10/virtualbox中centos7使用桥接模式及配置固定ip/" class="archive-article-date">
+  	<time datetime="2019-05-10T02:50:27.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-05-10</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>1 虚拟机网络设置，选择桥接模式，其他值默认就行<br><img src="/assets/blogImg/virtualbox1.png" alt></p>
+<p>2 查看宿主机ip地址，子网掩码(netmask)以及网关(gateway)信息<br>mac 打开系统偏好设置 选择网络 选择高级 找到tcp/ip页<br>windows 可以ifconfg命令查看</p>
+<p><img src="/assets/blogImg/virtualbox2.png" alt></p>
+<p>3 在centos中配置网卡信息<br><img src="/assets/blogImg/virtualbox3.png" alt><br><img src="/assets/blogImg/virtualbox4.png" alt></p>
+<ul>
+<li>cd /etc/sysconfig/network-scripts</li>
+<li>ifcfg-enp0s3就是网卡配置文件 不同的机器这个后缀名字不一样，建议修改之前先把这个文件备份一下</li>
+<li>将BOOTPROTO设置成static,ONBOOT设置成yes</li>
+<li>然后设置ip地址，子网掩码，网关就行了,这里子网掩码和网关的设置就需要用到第二步的信息了，子网掩码和网关应该与宿主机是一样的</li>
+</ul>
+<p>4 设置完成后 service network restart 重启网络服务就可以了</p>
+<p>5 此时ping  <a href="http://www.baidu.com就能ping通了" target="_blank" rel="noopener">www.baidu.com就能ping通了</a></p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2019/05/10/virtualbox中centos7使用桥接模式及配置固定ip/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-zookeeper笔记" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
